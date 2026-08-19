@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sideline — your music, on the side</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --bg: #0a0a0f;
+  --bg-raised: #131319;
+  --violet: #9b7bff;
+  --violet-dim: #6b52b8;
+  --magenta: #ff5fae;
+  --ink: #f2f0f8;
+  --ink-dim: #9a96ab;
+  --line: #232230;
+  --card: #101016;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+html{scroll-behavior:smooth;}
+
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+::selection{background:var(--violet);color:#0a0a0f;}
+
+a{color:inherit;text-decoration:none;}
+
+.mono{font-family:'JetBrains Mono',monospace;}
+
+/* ===== NAV ===== */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 6vw;
+  background:rgba(10,10,15,0.75);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.logo{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700;
+  font-size:1.15rem;
+  letter-spacing:0.02em;
+  display:flex;align-items:center;gap:10px;
+}
+.logo-mark{
+  width:22px;height:22px;
+  display:flex;align-items:flex-end;gap:2px;
+}
+.logo-mark span{
+  width:3px;background:var(--violet);border-radius:1px;
+  animation:eq 1.1s ease-in-out infinite;
+}
+.logo-mark span:nth-child(1){height:40%;animation-delay:-0.9s;}
+.logo-mark span:nth-child(2){height:100%;animation-delay:-0.4s;}
+.logo-mark span:nth-child(3){height:65%;animation-delay:-1.3s;}
+.logo-mark span:nth-child(4){height:80%;animation-delay:-0.1s;}
+@keyframes eq{
+  0%,100%{transform:scaleY(0.35);}
+  50%{transform:scaleY(1);}
+}
+.navlinks{display:flex;gap:34px;font-size:0.88rem;color:var(--ink-dim);}
+.navlinks a{transition:color .2s;}
+.navlinks a:hover{color:var(--ink);}
+.nav-cta{
+  background:var(--violet);color:#0a0a0f;padding:9px 18px;border-radius:999px;
+  font-size:0.82rem;font-weight:600;transition:transform .2s, background .2s;
+}
+.nav-cta:hover{background:var(--magenta);transform:translateY(-1px);}
+.burger{display:none;}
+
+/* ===== HERO ===== */
+.hero{
+  position:relative;
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;
+  padding:120px 6vw 80px;
+  overflow:hidden;
+}
+.hero-bars{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:46vh;
+  display:flex;align-items:flex-end;justify-content:center;
+  gap:clamp(3px,0.8vw,7px);
+  opacity:0.5;
+  mask-image:linear-gradient(to top, black, transparent);
+  -webkit-mask-image:linear-gradient(to top, black, transparent);
+  pointer-events:none;
+}
+.hero-bars span{
+  width:clamp(3px,1vw,9px);
+  background:linear-gradient(to top, var(--violet), var(--magenta));
+  border-radius:3px 3px 0 0;
+  animation:bar 2.4s ease-in-out infinite;
+}
+@keyframes bar{
+  0%,100%{height:8%;}
+  50%{height:var(--h,60%);}
+}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.78rem;
+  color:var(--violet);
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  margin-bottom:22px;
+  display:flex;align-items:center;gap:10px;
+  z-index:2;
+}
+.eyebrow::before{
+  content:'';width:6px;height:6px;border-radius:50%;background:var(--magenta);
+  animation:pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.25;}}
+
+.hero h1{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700;
+  font-size:clamp(3.2rem,10vw,7.2rem);
+  line-height:0.95;
+  letter-spacing:-0.02em;
+  z-index:2;
+  background:linear-gradient(180deg, #ffffff 0%, #cfc6f0 60%, var(--violet-dim) 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.hero p.sub{
+  z-index:2;
+  margin-top:22px;
+  max-width:520px;
+  color:var(--ink-dim);
+  font-size:1.08rem;
+  line-height:1.6;
+}
+.hero-actions{
+  z-index:2;
+  margin-top:44px;
+  display:flex;gap:16px;flex-wrap:wrap;justify-content:center;
+}
+.btn-primary{
+  background:var(--violet);
+  color:#0a0a0f;
+  padding:15px 30px;
+  border-radius:999px;
+  font-weight:600;
+  font-size:0.95rem;
+  display:inline-flex;align-items:center;gap:10px;
+  transition:transform .2s, box-shadow .2s, background .2s;
+  box-shadow:0 0 0 0 rgba(155,123,255,0.5);
+}
+.btn-primary:hover{
+  background:var(--magenta);
+  transform:translateY(-2px);
+  box-shadow:0 8px 30px -6px rgba(255,95,174,0.55);
+}
+.btn-ghost{
+  border:1px solid var(--line);
+  color:var(--ink);
+  padding:15px 26px;
+  border-radius:999px;
+  font-weight:500;
+  font-size:0.95rem;
+  transition:border-color .2s, background .2s;
+}
+.btn-ghost:hover{border-color:var(--violet);background:rgba(155,123,255,0.06);}
+
+.hero-meta{
+  z-index:2;margin-top:56px;
+  display:flex;gap:40px;flex-wrap:wrap;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--ink-dim);
+}
+.hero-meta b{color:var(--ink);font-weight:500;}
+
+/* ===== SECTION shared ===== */
+section{padding:120px 6vw;position:relative;}
+.section-head{max-width:640px;margin:0 auto 64px;text-align:center;}
+.section-tag{
+  font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--violet);
+  letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;display:block;
+}
+.section-head h2{
+  font-family:'Space Grotesk',sans-serif;font-weight:600;
+  font-size:clamp(2rem,4.5vw,3rem);letter-spacing:-0.01em;
+}
+.section-head p{color:var(--ink-dim);margin-top:16px;font-size:1.02rem;line-height:1.6;}
+
+.divider{
+  display:flex;align-items:flex-end;justify-content:center;gap:4px;height:28px;opacity:0.35;
+}
+.divider span{width:3px;background:var(--violet);border-radius:2px;animation:eq 1.4s ease-in-out infinite;}
+.divider span:nth-child(odd){animation-delay:-0.6s;}
+.divider span:nth-child(1){height:30%;}.divider span:nth-child(2){height:70%;}
+.divider span:nth-child(3){height:100%;}.divider span:nth-child(4){height:55%;}
+.divider span:nth-child(5){height:85%;}.divider span:nth-child(6){height:40%;}
+.divider span:nth-child(7){height:75%;}
+
+/* ===== FEATURES ===== */
+.features{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  max-width:1100px;margin:0 auto;
+  background:var(--line);
+  border:1px solid var(--line);
+  border-radius:20px;overflow:hidden;
+}
+.feature{
+  background:var(--card);padding:38px 30px;
+  transition:background .25s;
+}
+.feature:hover{background:var(--bg-raised);}
+.feature .num{font-family:'JetBrains Mono',monospace;color:var(--violet-dim);font-size:0.8rem;}
+.feature h3{
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.25rem;margin:14px 0 10px;
+}
+.feature p{color:var(--ink-dim);font-size:0.92rem;line-height:1.6;}
+
+/* ===== DOWNLOAD ===== */
+.download-card{
+  max-width:760px;margin:0 auto;
+  background:linear-gradient(160deg, var(--card) 0%, #15111f 100%);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:52px 6vw;
+  display:flex;align-items:center;gap:40px;
+  flex-wrap:wrap;
+  position:relative;
+  overflow:hidden;
+}
+.app-icon{
+  width:96px;height:96px;border-radius:24px;flex-shrink:0;
+  background:linear-gradient(145deg, var(--violet), var(--magenta));
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 20px 50px -12px rgba(155,123,255,0.45);
+}
+.app-icon svg{width:44px;height:44px;}
+.download-info{flex:1;min-width:220px;}
+.download-info h3{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.7rem;}
+.download-info p{color:var(--ink-dim);margin-top:6px;font-size:0.92rem;}
+.download-specs{
+  display:flex;gap:26px;margin-top:22px;flex-wrap:wrap;
+  font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--ink-dim);
+}
+.download-specs b{color:var(--ink);font-weight:500;display:block;font-size:0.95rem;margin-bottom:2px;}
+.download-btn-wrap{width:100%;margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;}
+.progress-track{
+  width:100%;height:4px;background:var(--line);border-radius:4px;margin-top:18px;overflow:hidden;display:none;
+}
+.progress-fill{
+  height:100%;width:0%;background:linear-gradient(90deg, var(--violet), var(--magenta));
+  transition:width .2s;
+}
+.download-note{
+  margin-top:14px;font-size:0.78rem;color:var(--ink-dim);font-family:'JetBrains Mono',monospace;
+}
+
+.install-steps{
+  max-width:760px;margin:56px auto 0;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+}
+.step{padding:22px;border:1px solid var(--line);border-radius:16px;}
+.step .step-num{
+  font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--violet);font-size:1.4rem;
+}
+.step h4{font-size:0.95rem;font-weight:600;margin:10px 0 6px;}
+.step p{font-size:0.82rem;color:var(--ink-dim);line-height:1.5;}
+
+/* ===== FORM (contact) ===== */
+.tape-card{
+  max-width:640px;margin:0 auto;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:48px 6vw;
+}
+.tape-label{
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px dashed var(--line);
+  padding-bottom:18px;margin-bottom:30px;
+  font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--ink-dim);
+  letter-spacing:0.08em;text-transform:uppercase;
+}
+.field{margin-bottom:22px;}
+.field label{
+  display:block;font-size:0.8rem;color:var(--ink-dim);margin-bottom:8px;
+  font-family:'JetBrains Mono',monospace;letter-spacing:0.03em;
+}
+.field input, .field textarea, .field select{
+  width:100%;background:var(--bg);border:1px solid var(--line);border-radius:12px;
+  padding:14px 16px;color:var(--ink);font-family:'Inter',sans-serif;font-size:0.95rem;
+  transition:border-color .2s;
+}
+.field select{cursor:pointer;}
+.field input:focus, .field textarea:focus, .field select:focus{
+  outline:none;border-color:var(--violet);
+}
+.field textarea{resize:vertical;min-height:110px;}
+.form-submit{
+  width:100%;background:var(--violet);color:#0a0a0f;border:none;border-radius:999px;
+  padding:16px;font-weight:600;font-size:0.95rem;cursor:pointer;
+  transition:background .2s, transform .2s;
+  font-family:'Inter',sans-serif;
+}
+.form-submit:hover{background:var(--magenta);transform:translateY(-1px);}
+.form-status{
+  margin-top:16px;font-size:0.85rem;text-align:center;color:var(--ink-dim);
+  min-height:20px;font-family:'JetBrains Mono',monospace;
+}
+.form-status.ok{color:var(--violet);}
+
+/* ===== CONNECT ===== */
+.connect-wrap{
+  max-width:640px;margin:0 auto;
+  display:flex;flex-direction:column;gap:16px;
+}
+.now-playing{
+  display:flex;align-items:center;gap:20px;
+  background:var(--card);border:1px solid var(--line);border-radius:20px;
+  padding:24px 28px;
+  transition:border-color .25s, transform .25s;
+}
+.now-playing:hover{border-color:var(--violet);transform:translateX(4px);}
+.np-art{
+  width:58px;height:58px;border-radius:14px;flex-shrink:0;
+  background:linear-gradient(145deg, var(--magenta), var(--violet));
+  display:flex;align-items:center;justify-content:center;
+}
+.np-art svg{width:26px;height:26px;}
+.np-meta{flex:1;}
+.np-meta .np-tag{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--violet);letter-spacing:0.1em;text-transform:uppercase;}
+.np-meta h4{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.15rem;margin-top:4px;}
+.np-meta p{color:var(--ink-dim);font-size:0.85rem;margin-top:2px;}
+.np-arrow{color:var(--ink-dim);font-size:1.3rem;transition:transform .25s, color .25s;}
+.now-playing:hover .np-arrow{transform:translateX(4px);color:var(--violet);}
+
+/* ===== FOOTER ===== */
+footer{
+  padding:50px 6vw;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+  color:var(--ink-dim);font-size:0.82rem;
+}
+footer .logo{font-size:1rem;}
+
+/* ===== responsive ===== */
+@media (max-width:760px){
+  .navlinks{display:none;}
+  .features{grid-template-columns:1fr;}
+  .install-steps{grid-template-columns:1fr;}
+  .download-card{padding:40px 28px;}
+  section{padding:90px 6vw;}
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important; animation-iteration-count:1 !important;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><span class="logo-mark"><span></span><span></span><span></span><span></span></span>Sideline</div>
+  <div class="navlinks">
+    <a href="#download">Download</a>
+    <a href="#contact">Feedback</a>
+    <a href="#connect">Connect</a>
+  </div>
+  <a href="#download" class="nav-cta">Get the app</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-bars" id="heroBars"></div>
+  <div class="eyebrow">Personal project · Android · Free</div>
+  <h1>Sideline</h1>
+  <p class="sub">A music player built on the side, for listening on the side. Purple-on-black, no clutter, just play. One person's app, made for anyone who wants it.</p>
+  <div class="hero-actions">
+    <a href="#download" class="btn-primary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v13m0 0l-5-5m5 5l5-5M5 21h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Download APK
+    </a>
+    <a href="#connect" class="btn-ghost">Say hi</a>
+  </div>
+  <div class="hero-meta">
+    <span><b>Android 8+</b> requirement</span>
+    <span><b>~52 MB</b> install size</span>
+    <span><b>1</b> developer</span>
+  </div>
+</section>
+
+<section id="features">
+  <div class="section-head">
+    <span class="section-tag">Why Sideline</span>
+    <h2>Built for one thing</h2>
+    <p>No account walls, no bloat. Just a player that stays out of the way of your queue.</p>
+  </div>
+  <div class="features">
+    <div class="feature">
+      <span class="num mono">01</span>
+      <h3>AMOLED black</h3>
+      <p>True-black UI with a violet accent — easy on the eyes, easier on the battery.</p>
+    </div>
+    <div class="feature">
+      <span class="num mono">02</span>
+      <h3>Recommendation feed</h3>
+      <p>Picks that actually reflect what you've been playing, not what's trending.</p>
+    </div>
+    <div class="feature">
+      <span class="num mono">03</span>
+      <h3>Built solo</h3>
+      <p>No team, no roadmap meetings — just steady updates from one developer.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+<section id="download">
+  <div class="section-head">
+    <span class="section-tag">Get it</span>
+    <h2>Download Sideline</h2>
+    <p>Sideloaded, not store-listed — install the APK directly to your Android device.</p>
+  </div>
+
+  <div class="download-card">
+    <div class="app-icon">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M9 18V5l12-2v13" stroke="#0a0a0f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="18" r="3" stroke="#0a0a0f" stroke-width="1.8"/><circle cx="18" cy="16" r="3" stroke="#0a0a0f" stroke-width="1.8"/></svg>
+    </div>
+    <div class="download-info">
+      <h3>Sideline.apk</h3>
+      <p>Latest build · sideloaded install</p>
+      <div class="download-specs">
+        <span><b>v1.0</b>Version</span>
+        <span><b id="apkSize">52.1 MB</b>File size</span>
+        <span><b>Android 8+</b>Minimum OS</span>
+      </div>
+    </div>
+    <div class="download-btn-wrap">
+      <a href="https://github.com/tejassrivastava077-ops/Sideline-Music/releases/download/v1.0.0/Sideline.apk" class="btn-primary" id="dlBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v13m0 0l-5-5m5 5l5-5M5 21h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Download for Android
+      </a>
+      <a href="#contact" class="btn-ghost">Report an issue</a>
+    </div>
+    <div class="progress-track" id="progressTrack"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="download-note" id="dlNote">Unknown-sources install required — see steps below.</div>
+  </div>
+
+  <div class="install-steps">
+    <div class="step">
+      <div class="step-num mono">01</div>
+      <h4>Allow this source</h4>
+      <p>When prompted, allow installs from your browser or file manager for this one file.</p>
+    </div>
+    <div class="step">
+      <div class="step-num mono">02</div>
+      <h4>Open the APK</h4>
+      <p>Find Sideline.apk in your Downloads and tap it to start the install.</p>
+    </div>
+    <div class="step">
+      <div class="step-num mono">03</div>
+      <h4>Install & play</h4>
+      <p>Confirm the install, open Sideline, and you're straight into your library.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+<section id="contact">
+  <div class="section-head">
+    <span class="section-tag">Feedback</span>
+    <h2>Found a bug? Want a feature?</h2>
+    <p>Drop it here — this opens straight in your mail app addressed to me.</p>
+  </div>
+  <div class="tape-card">
+    <div class="tape-label"><span>SIDE.A — feedback</span><span>#sideline</span></div>
+    <form id="contactForm">
+      <div class="field">
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="Your name" required>
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="you@example.com" required>
+      </div>
+      <div class="field">
+        <label for="topic">Topic</label>
+        <select id="topic">
+          <option>Bug report</option>
+          <option>Feature request</option>
+          <option>General feedback</option>
+          <option>Something else</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="message">Message</label>
+        <textarea id="message" placeholder="What's going on?" required></textarea>
+      </div>
+      <button type="submit" class="form-submit">Send feedback</button>
+      <div class="form-status" id="formStatus"></div>
+    </form>
+  </div>
+</section>
+
+<div class="divider"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+<section id="connect">
+  <div class="section-head">
+    <span class="section-tag">Connect</span>
+    <h2>Come say hi</h2>
+    <p>Follow along for builds, screenshots, and whatever's next.</p>
+  </div>
+  <div class="connect-wrap">
+    <a class="now-playing" href="https://instagram.com/tejuss.s" target="_blank" rel="noopener">
+      <div class="np-art">
+        <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="#0a0a0f" stroke-width="1.8"/><circle cx="12" cy="12" r="4" stroke="#0a0a0f" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1.2" fill="#0a0a0f"/></svg>
+      </div>
+      <div class="np-meta">
+        <span class="np-tag">Instagram</span>
+        <h4>@tejuss.s</h4>
+        <p>Follow for updates on Sideline</p>
+      </div>
+      <span class="np-arrow">→</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="logo"><span class="logo-mark"><span></span><span></span><span></span><span></span></span>Sideline</div>
+  <span class="mono">Built solo · not affiliated with any streaming platform</span>
+</footer>
+
+<script>
+// hero equalizer bars
+(function(){
+  const wrap = document.getElementById('heroBars');
+  const count = window.innerWidth < 600 ? 28 : 56;
+  for(let i=0;i<count;i++){
+    const bar = document.createElement('span');
+    const h = 20 + Math.random()*80;
+    bar.style.setProperty('--h', h+'%');
+    bar.style.animationDelay = (-Math.random()*2.4)+'s';
+    bar.style.animationDuration = (1.8 + Math.random()*1.2)+'s';
+    wrap.appendChild(bar);
+  }
+})();
+
+// contact form -> mailto
+document.getElementById('contactForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const topic = document.getElementById('topic').value;
+  const message = document.getElementById('message').value.trim();
+  const status = document.getElementById('formStatus');
+
+  if(!name || !email || !message){
+    status.textContent = 'Please fill in every field.';
+    status.classList.remove('ok');
+    return;
+  }
+
+  const subject = encodeURIComponent('Sideline — ' + topic);
+  const body = encodeURIComponent(
+    'Name: ' + name + '\n' +
+    'Email: ' + email + '\n' +
+    'Topic: ' + topic + '\n\n' +
+    message
+  );
+  window.location.href = 'mailto:hello@example.com?subject=' + subject + '&body=' + body;
+
+  status.textContent = 'Opening your mail app…';
+  status.classList.add('ok');
+});
+
+// download progress feel (visual only, actual download handled by browser)
+document.getElementById('dlBtn').addEventListener('click', function(){
+  const track = document.getElementById('progressTrack');
+  const fill = document.getElementById('progressFill');
+  const note = document.getElementById('dlNote');
+  track.style.display = 'block';
+  fill.style.width = '0%';
+  let p = 0;
+  note.textContent = 'Starting download…';
+  const iv = setInterval(function(){
+    p += Math.random()*22;
+    if(p >= 100){
+      p = 100;
+      clearInterval(iv);
+      note.textContent = 'Downloaded — open the file to install.';
+    } else {
+      note.textContent = 'Downloading… ' + Math.floor(p) + '%';
+    }
+    fill.style.width = p + '%';
+  }, 220);
+});
+
+// smooth active nav on scroll (subtle)
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.navlinks a');
+window.addEventListener('scroll', function(){
+  let current = '';
+  sections.forEach(sec=>{
+    const top = sec.offsetTop - 120;
+    if(window.scrollY >= top) current = sec.getAttribute('id');
+  });
+  navLinks.forEach(link=>{
+    link.style.color = link.getAttribute('href') === '#'+current ? 'var(--ink)' : '';
+  });
+});
+</script>
+
+</body>
+</html>
